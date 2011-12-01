@@ -1,0 +1,3 @@
+We have 2 folders:
+server: The computation receiving server.
+client: The in-browser computation client.
