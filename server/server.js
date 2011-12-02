@@ -3,14 +3,19 @@ var client_js = require('fs').readFileSync('../client/client.js');
 var work_js = require('fs').readFileSync('../client/work.js');
 var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
+var jade = require('fs').readFileSync('./jade.js');
 
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
 var app = require('express').createServer();
 
+app.configure(function(){
+	app.set("view options", {layout: false});
+});
+
 app.get('/', function(req, res){
-    res.end(client_html);
+    res.render('./template.jade');
 });
 
 app.get('/client.js', function (req, res) {
