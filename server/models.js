@@ -78,6 +78,16 @@ schemas.Job.methods.dropRunning = function(min_last_heartbeat){
     });
 };
 
+schemas.Job.methods.progress = function(){
+    if(this.status == "Done"){
+        return 1.0;
+    } else if(this.status == "Reduce"){
+        return 0.5 + (this.reduceOutput.length / (this.reduceOutput.length + this.reduceInput.length + this.reduceRunning.length)) * 0.5;
+    } else {
+        return 0.5 * (this.mapOutput.length / (this.mapOutput.length + this.mapInput.length + this.mapRunning.length));
+    }
+};
+
 schemas.Job.methods.checkMapCompletion = function(){
     if(!(this.mapInput.length || this.mapRunning.length)){
         var output = [];
@@ -142,7 +152,7 @@ schemas.Job.statics.heartbeat = function(taskId){
     });
 };
 
-schemas.Job.statics.commitResults = function(taskId, data){
+schemas.Job.statics.commitResults = function(taskId, data, ret){
     Job.findOne().or([{'mapRunning.taskId': taskId},
                     {'reduceRunning.taskId': taskId}]).run(function(err, job){
         if(err){
@@ -157,6 +167,7 @@ schemas.Job.statics.commitResults = function(taskId, data){
                     if(err){
                         console.error(err);
                     } else {
+                        ret(job.jobId, job.status, job.progress());
                         //console.log("Saved work result");
                     }
                 });

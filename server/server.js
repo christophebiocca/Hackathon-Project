@@ -25,10 +25,10 @@ app.get('/upload', function(req, res){
 var models = require('./models');
 var mandelbrotstuff = require('./mandelbrot_task');
 app.post('/upload', function(req, res, next){
-    mandelbrotstuff.mandelbrot(80);
   // connect-form adds the req.form object
   // we can (optionally) define onComplete, passing
   // the exception (if any) fields parsed, and files parsed
+  mandelbrotstuff.mandelbrot(80);
   req.form.complete(function(err, fields, files){
     if (err) {
       next(err);
@@ -40,10 +40,23 @@ app.post('/upload', function(req, res, next){
         if (err){
             console.error(err);
         }
-        console.log(filetext);
+        var job = new models.Job();
+        job.reducer = ("function(k,vs,out){" + fields.reduce + "}");
+        job.mapper = ("function(k,v,out){" + fields.map + "}");
+        var json = JSON.parse(filetext);
+        job.mapInput = _.map(json, function(pair){
+            return {data:[{key: JSON.stringify(pair.k), value:JSON.stringify(pair.v)}]}
+        });
+        job.save(function(err){
+            if(err){
+                console.error(err);
+            } else {
+                console.log("Submitted JOB!");
+            }
+        });
       });
     };
-    res.render('./WatchScreen.jade');
+    res.redirect('/');
   });
 
   req.form.on('progress', function(bytesReceived, bytesExpected){
@@ -55,6 +68,24 @@ app.post('/upload', function(req, res, next){
 
 app.get('/', function(req,res){
     res.render('./WatchScreen.jade');
+});
+
+app.get('results/:id', function(req,res){
+    Job.findOne({jobId: req.params.id}, function(err, job){
+        if(err){
+            console.error(err);
+        } else {
+            if(job.status == "Done"){
+                var data = [];
+                _.each(job.reduceOutput,
+                    function(task){
+                         _.each(task.data, function(pair){data.push({k: JSON.parse(pair.key), v: JSON.parse(pair.value)})});
+                    }
+                );
+                res.end(JSON.stringify(data));
+            }
+        }
+    });
 });
 
 app.get('/client.js', function (req, res) {
@@ -100,22 +131,23 @@ everyone.now.getTask = function(retVal){
         };
         var data = _.map(newTask.data, mapDatums);
         var taskId = newTask.taskId;
-        console.log("Distributing task #", taskId, code, data);
+        //console.log("Distributing task #", taskId, code, data);
         retVal(taskId, code, data);
     });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
-    console.log("Completed task #" + taskid + " results: " + JSON.stringify(data));
+    //console.log("Completed task #" + taskid + " results: " + JSON.stringify(data));
     var encodedData = _.map(data, function(datum){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
-    models.Job.commitResults(taskid, encodedData);
-    everyone.now.updateProgress(taskid,"lol","hello");
+    models.Job.commitResults(taskid, encodedData, function(jobId, status, percentage){
+        everyone.now.updateProgress(jobId,status,percentage);
+    });
     retVal("OK");
 };
 
 everyone.now.heartbeat = function(taskid){
-    console.log("Got heartbeat for task #" + taskid);
+    //console.log("Got heartbeat for task #" + taskid);
     models.Job.heartbeat(taskid);
 };
