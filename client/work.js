@@ -22,8 +22,7 @@ self.onmessage = function (event) {
     if (event.data.type === 'NewData'){
         mapData(event.data.Key, event.data.Value, function (k, v) {
             self.postMessage({ 'type': 'DataReturn', 'Data': {key:k,value:v}});
-        })
-        self.postMessage({ 'type': 'DataReturn', 'Data': mapData(event.data.Key, event.data.Value) });
+        });
         self.postMessage({ 'type': 'DataRequest' });
     };
 };
