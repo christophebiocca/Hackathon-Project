@@ -3,7 +3,7 @@ var uuid = require('node-uuid');
 
 var getData = function(){
     var dataset = [];
-    for(var i = 0; i < 10; ++i){
+    for(var i = 0; i < 1; ++i){
         var input = [];
         for(var j = 0; j < 10; ++j){
             input.push({key: JSON.stringify('a'+i), value: JSON.stringify(j)}); 
@@ -31,4 +31,4 @@ var createJob = function(){
     });
 }
 
-setInterval(createJob, 10000);
+createJob();
