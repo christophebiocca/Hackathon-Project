@@ -4,6 +4,7 @@ var mandelbrot = function(res){
     var job = new Job();
 
     job.mapper = String(function(k,v,output){
+        output(k,v);
         var colorVal = function(x,y){    
             var i = 0;
             var xnew = x;
