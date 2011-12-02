@@ -26,8 +26,8 @@ var _ = require('underscore');
 everyone.now.getTask = function(retVal){
     // Right now, just return a fake task.
     retVal({
-        taskid: uuid.v4,
+        taskid: uuid.v4(),
         code: "function(k,v,out){out.collect(k,v);}",
-        data: _(100).times(function(i){return {k:i, v:i-100};});
+        data: [{k: 1, v: 2}, {k:22, v:999}]
     });
 };
