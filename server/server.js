@@ -1,5 +1,9 @@
 var client_html = require('fs').readFileSync('../client/test_client.html');
+var client_js = require('fs').readFileSync('../client/client.js');
+var work_js = require('fs').readFileSync('../client/work.js');
+var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
+
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
@@ -9,12 +13,20 @@ app.get('/', function(req, res){
     res.end(client_html);
 });
 
-app.get('/underscore.js', function(req, response){
-    response.end(underscore);
+app.get('/client.js', function (req, res) {
+    res.end(client_js);
 });
 
-app.get('Drew put path here!', function(req, res){
-    res.end('YOU NEED A FILE PATH HERE.');
+app.get('/work.js', function (req, res) {
+    res.end(work_js);
+});
+
+app.get('/jquery-1.7.1.js', function (req, res) {
+    res.end(jquery_js);
+});
+
+app.get('/underscore.js', function(req, response){
+    response.end(underscore);
 });
 
 app.listen(8080);
@@ -37,7 +49,7 @@ everyone.now.getTask = function(retVal){
     var code = String(function(k,v,out){out(k,v);});
     var data = [{k: 1, v: 2}, {k:22, v:999}];
     console.log('Sent out task #' + taskid);
-    retVal(uuid.v4(), code, data);
+    retVal(taskid, code, data);
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){

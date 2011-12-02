@@ -10,3 +10,7 @@ var everyone = nowjs.initialize(httpServer);
 everyone.now.logStuff = function(msg){
     console.log(msg);
 }
+
+everyone.now.aggregateData = function (data) {
+    
+};
