@@ -12,7 +12,7 @@ $(document).ready(function () {
             clearInterval(currentTaskIntervalID);
             currentTaskIntervalID = setInterval(function () {
                 now.heartbeat(currentTaskId);
-            }, 5000);
+            }, 500);
         };
         worker.onmessage = function(event){
             if (event.data.type === "DataRequest"){     //if the worker requests data
@@ -22,9 +22,7 @@ $(document).ready(function () {
             };
             
 			if (event.data.type === "DataReturn"){
-                console.log('data returned');
-                console.log(event.data.Data.k);
-                console.log(event.data.Data.v);
+                now.completeTask(currentTaskId, event.data.Data, function () {});
             };
         };
         now.ready(function () {

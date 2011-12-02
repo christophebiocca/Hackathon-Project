@@ -14,7 +14,7 @@ pause = function (millis) {
 var clientCode;
 
 var mapData = function (k,v,collector) {
-    pause(30000);
+    pause(3000);
     clientCode(k,v,collector);
 };
 
