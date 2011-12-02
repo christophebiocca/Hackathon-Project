@@ -1,3 +1,5 @@
+importScripts('underscore.js');
+
 pause = function (millis) {
     var date = new Date();
     var curDate = null;
