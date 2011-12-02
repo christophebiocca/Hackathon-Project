@@ -33,6 +33,7 @@ app.post('/upload', function(req, res, next){
       next(err);
     } else {
       console.log("File Uploaded Successfully");
+      console.log(files)
     }
     res.render('./WatchScreen.jade');
   });
