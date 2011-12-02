@@ -31,3 +31,26 @@ var everyone = nowjs.initialize(app);
 everyone.now.logStuff = function(msg){
     console.log(msg);
 }
+
+var uuid = require('node-uuid');
+var _ = require('underscore');
+
+
+
+everyone.now.getTask = function(retVal){
+    // Right now, just return a fake task.
+    retVal({
+        taskid: uuid.v4(),
+        code: "function(k,v,out){out.collect(k,v);}",
+        data: [{k: 1, v: 2}, {k:22, v:999}]
+    });
+};
+
+everyone.now.completeTask = function(taskid, retVal){
+    // Right now, we don't do anything.
+    retVal("OK");
+};
+
+everyone.now.heartbeat = function(taskid){
+    // Right now, we don't do anything.
+};
