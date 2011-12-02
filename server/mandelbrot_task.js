@@ -59,4 +59,4 @@ var mandelbrot = function(res){
     });
 };
 
-export.mandelbrot = mandelbrot;
+exports.mandelbrot = mandelbrot;
