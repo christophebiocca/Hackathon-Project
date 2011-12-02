@@ -31,6 +31,5 @@ self.onmessage = function (event) {
 			});
 		});
         self.postMessage({'type': 'DataReturn', 'Data': results});
-        self.postMessage({ 'type': 'DataRequest' });
     };
 };
