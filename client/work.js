@@ -25,7 +25,7 @@ self.onmessage = function (event) {
     };
     if (event.data.type === 'NewData'){
 		_.each(event.data.NewData, function(datum){
-			mapData(event.datum.k, event.datum.v, function (k, v) {
+			mapData(datum.k, datum.v, function (k, v) {
 				self.postMessage({ 'type': 'DataReturn', 'Data': {'k':k,'v':v}});
 			});
 		});
