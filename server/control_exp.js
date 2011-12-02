@@ -1,4 +1,3 @@
-<script type = "text/javascript">
 
 	var colorVal = function(x,y){
 		
@@ -13,7 +12,7 @@
 			xnew = (xold^2) + (yold^2);
 			ynew = 2*xold*yold;
 
-			value = sqrt(xnew^2 + ynew^2);
+			value = Math.sqrt(xnew^2 + ynew^2);
 
 			if(value>2){
 				return i;
@@ -35,11 +34,12 @@
 	}
 	
 	function create_canvas(){
-		
-		element = document.getElementById("canvas1");
-		c = element.getContext("2d");
+		var Canvas = require('canvas');
+		canvas = new Canvas(1600, 900);
+		c = canvas.getContext("2d");
+		var fs = require('fs');
 		imageData = c.createImageData(1600, 900);
-		int i=0;
+		var i=0;
 		for(y=-2; y<2; y+=0.0025){
 			for(x=-3.55; x<3.5; x+=0.0025){
 				color = control_experiment(x,y)
@@ -50,9 +50,18 @@
 				i += 4;
 			}
 		}
+		
+		var out = fs.createWriteStream('state.png');
+		var stream = canvas.createPNGStream();
+
+		stream.on('data', function(chunk){
+			out.write(chunk);
+		});
+		
+
 	}
 	
 	create_canvas();
 		
 		
-</script>
+
