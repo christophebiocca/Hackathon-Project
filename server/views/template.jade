@@ -1,0 +1,32 @@
+!!! 5
+html
+	head
+		link(rel="stylesheet", href="./lib/codemirror.css", type="text/css")
+		script(src="lib/codemirror.js", type="text/javascript")
+		link(rel="stylesheet", href="css/default.css", type="text/css")
+		script(src="lib/mode/javascript/javascript.js", type="text/javascript")
+		link(rel="stylesheet", href="css/docs.css", type="text/css")
+		style(type="text/css")
+			.CodeMirror {border: 1px solid black;width:49.5%;float:left;}
+	body
+		h1 Map Redux
+		form
+			#codeEditors
+				textarea#map
+				textarea#reduce
+			br/
+			#bottom_bar
+				div(style="display:inline;")
+					input(type="file")
+				div(style="float:right")
+					input(type="submit")
+					input(type="submit", value="Show")
+		script(type="text/javascript")
+			var map_editor = CodeMirror.fromTextArea(document.getElementById("map"), {
+				mode: "javascript",
+				lineNumbers: true,
+			});
+			var reduce_editor = CodeMirror.fromTextArea(document.getElementById("reduce"), {
+				mode: "javascript",
+				lineNumbers: true,
+			});
