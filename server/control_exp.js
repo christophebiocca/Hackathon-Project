@@ -22,7 +22,7 @@
 			yold = ynew;
 			xold = xnew;
 		}
-		return 1000000;
+		return 10;
 
 	}
 
@@ -30,7 +30,7 @@
 	var control_experiment = function(x,y){
 		var color = colorVal(x,y);
 		//console.log("out of "+color);
-		color = color/3921.5;
+		color = color*25.5;
 		color = parseInt(color);
 		//console.log("after div  "+color);
 		return color;
@@ -46,10 +46,10 @@
 		for(y=-1; y<1; y+=0.01){
 			for(x=-2.0; x<1; x+=0.01){
 				color = control_experiment(x,y)
-				imageData.data[i+0] = 100;
+				imageData.data[i+0] = 200;
 				imageData.data[i+1] = 100;
-				imageData.data[i+2] = 100;
-				imageData.data[i+3] = 1;
+				imageData.data[i+2] = 50;
+				imageData.data[i+3] = 200;
 				i += 4;
 				//console.log(x+"  "+y+"  "+color);
 			}
