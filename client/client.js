@@ -15,7 +15,8 @@ $(document).ready(function () {
             }
             if (event.data.type === "DataReturn"){
                 console.log('data returned');
-                console.log(event.data.Data);
+                console.log(event.data.k);
+                console.log(event.data.v);
             }
         }
         now.ready(function () {
