@@ -41,7 +41,7 @@
 		canvas = new Canvas(1600, 900);
 		ctx = canvas.getContext("2d");
 		var fs = require('fs');
-		/*imageData = c.createImageData(1600, 900);
+		imageData = ctx.createImageData(1600, 900);
 		var i=0;
 		for(y=-1; y<1; y+=0.01){
 			for(x=-2.0; x<1; x+=0.01){
@@ -54,13 +54,13 @@
 				//console.log(x+"  "+y+"  "+color);
 			}
 		}
-		*/
-		ctx.fillStyle = "rgb(200,0,0)";
+		ctx.putImageData(imageData, 0, 0);
+	/*	ctx.fillStyle = "rgb(200,0,0)";
 ctx.fillRect(10,10,55,50);
 
 ctx.fillStyle = "rgba(0,0,200, 0.5";
 ctx.fillRect (30, 30, 55, 50);
-		
+	*/	
 		var out = fs.createWriteStream('state.png');
 		var stream = canvas.createPNGStream();
 
