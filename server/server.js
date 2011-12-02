@@ -3,18 +3,29 @@ var client_js = require('fs').readFileSync('../client/client.js');
 var work_js = require('fs').readFileSync('../client/work.js');
 var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
+var jade = require('fs').readFileSync('./jade.js');
+var express = require("express");
 
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
 var app = require('express').createServer();
 
+app.configure(function(){
+	app.set("view options", {layout: false});
+});
+app.use("/css", express.static(__dirname + '/views/css'));
+app.use("/lib", express.static(__dirname + '/views/lib'));
 app.get('/', function(req, res){
-    res.end(client_html);
+    res.render('./template.jade');
 });
 
 app.get('/client.js', function (req, res) {
     res.end(client_js);
+});
+
+app.get('/test_client.html', function (req, res) {
+    res.end(client_html);
 });
 
 app.get('/work.js', function (req, res) {
@@ -42,23 +53,32 @@ var uuid = require('node-uuid');
 var _ = require('underscore');
 
 
+var models = require('./models');
+setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
-    // Right now, just return a fake task.
-    var taskid = uuid.v4();
-    var code = String(function(k,v,out){out(k,v);});
-    var data = [{k: 1, v: 2}, {k:22, v:999}];
-    console.log('Sent out task #' + taskid);
-    retVal(taskid, code, data);
+    models.Job.fetchTask(function(newTask, code){
+        console.log(newTask);
+        var mapDatums = function(datum){
+            return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
+        };
+        var data = _.map(newTask.data, mapDatums);
+        var taskId = newTask.taskId;
+        console.log("Returning task #", taskId);
+        retVal(taskId, code, data);
+    });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
     console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
-    // Right now, we don't do anything.
+    var encodedData = _.map(data, function(datum){
+        return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
+    });
+    models.Job.commitResults(taskid, encodedData);
     retVal("OK");
 };
 
 everyone.now.heartbeat = function(taskid){
     console.log("Got heartbeat for task #" + taskid);
-    // Right now, we don't do anything.
+    models.Job.heartbeat(taskid);
 };
