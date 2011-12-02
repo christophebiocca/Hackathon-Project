@@ -6,7 +6,7 @@ var getData = function(){
     for(var i = 0; i < 10; ++i){
         var input = [];
         for(var j = 0; j < 10; ++j){
-            input.push({k: 'a'+i, v: j}); 
+            input.push({key: JSON.stringify('a'+i), value: JSON.stringify(j)}); 
         }
         dataset.push({data: input});
     }

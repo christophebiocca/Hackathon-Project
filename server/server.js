@@ -57,54 +57,28 @@ var models = require('./models');
 setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
-    // Right now, just return a fake task.
-    var taskid = uuid.v4();
-
-    var code = String(function(k,v,output){
-	var colorVal = function(x,y){
-		
-		var i = 0;
-		var xnew = x;
-		var ynew = y;
-		var xold = x;
-		var yold = x;
-		var value;
-		for(i = 0; i<1000000; ++i){
-
-			xnew = (xold^2) + (yold^2);
-			ynew = 2*xold*yold;
-
-			value = Math.sqrt(xnew^2 + ynew^2);
-
-			if(value>2){
-				return i;
-			}
-
-
-			yold = ynew;
-			xold = xnew;
-		}
-		return 1000000;
-
-	}
-		var color = colorVal(k.x,k.y)/3921.5;
-		color = parseInt(color);
-		output(k,color);
-	});
-    
-    var data = [{k: {x:1, y:1}, v: 2}, {k:{x:0.5, y:0.5}, v:999}];
-
-    console.log('Sent out task #' + taskid);
-    retVal(taskid, code, data);
+    models.Job.fetchTask(function(newTask, code){
+        console.log(newTask);
+        var mapDatums = function(datum){
+            return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
+        };
+        var data = _.map(newTask.data, mapDatums);
+        var taskId = newTask.taskId;
+        console.log("Returning task #", taskId);
+        retVal(taskId, code, data);
+    });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
     console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
-    // Right now, we don't do anything.
+    var encodedData = _.map(data, function(datum){
+        return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
+    });
+    models.Job.commitResults(taskid, encodedData);
     retVal("OK");
 };
 
 everyone.now.heartbeat = function(taskid){
     console.log("Got heartbeat for task #" + taskid);
-    // Right now, we don't do anything.
+    models.Job.heartbeat(taskid);
 };
