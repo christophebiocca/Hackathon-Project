@@ -12,8 +12,8 @@ html
 		h1 Map Redux
 		form(action="/upload", method="post", enctype="multipart/form-data")
 			#codeEditors
-				textarea#map
-				textarea#reduce
+				textarea(name="map")#map
+				textarea(name="reduce")#reduce
 			br/
 			#bottom_bar
 				div(style="display:inline;")
