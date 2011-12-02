@@ -86,11 +86,19 @@ schemas.Job.methods.checkMapCompletion = function(){
                 output.push({key:datum.key, value:datum.value});
             });
         });
-        this.reduceInput = _.map(_.groupBy(output, 'key'), 
+        var data = _.map(_.groupBy(output, 'key'), 
             function(pairs, key){
-                return {data:[{key: key, value: JSON.stringify(_.pluck(pairs,'value'))}]};
+                return {key: key, value: JSON.stringify(_.map(pairs,function(pair){return JSON.parse(pair.value)}))};
             }
         );
+        this.reduceInput = [];
+        var blockSize = parseInt(Math.sqrt(data.length)) + 1;
+        var index = 0
+        while(index < data.length){
+            var chunk = data.slice(index, index+blockSize);
+            index += blockSize;
+            this.reduceInput.push({data: chunk});
+        }
         this.mapOutput = [];
         this.status = "Reduce";
     }

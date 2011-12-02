@@ -1,0 +1,25 @@
+!!! 5
+html
+	head
+		script(type="text/javascript",src="/nowjs/now.js")
+		script(language="javascript")
+			now.updateProgress = function(id,status,percentage) {
+				var table = document.getElementById("results");
+				var rowCount = table.rows.length;
+				var row = table.insertRow(rowCount);
+
+				var cell1 = row.insertCell(0);
+				cell1.innerHTML = id;
+
+				var cell2 = row.insertCell(1);
+				cell2.innerHTML = status;
+
+				var cell3 = row.insertCell(2);
+				cell3.innerHTML = percentage;
+			}
+	body
+		table(id="results",width="100%")
+			tr
+				th ID
+				th Status
+				th Percentage

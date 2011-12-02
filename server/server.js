@@ -21,24 +21,19 @@ app.get('/', function(req, res){
     res.render('./template.jade');
 });
 app.post('/upload', function(req, res, next){
-
-  // connect-form adds the req.form object
-  // we can (optionally) define onComplete, passing
-  // the exception (if any) fields parsed, and files parsed
   req.form.complete(function(err, fields, files){
     if (err) {
       next(err);
     } else {
       console.log("File Uploaded Successfully");
-      res.redirect('back');
     }
+    res.render('./WatchScreen.jade');
   });
 
-  // We can add listeners for several form
-  // events such as "progress"
   req.form.on('progress', function(bytesReceived, bytesExpected){
     var percent = (bytesReceived / bytesExpected * 100) | 0;
-    process.stdout.write('Uploading: %' + percent + '\r');
+    	console.log('Uploadin: %'+percent+'\n');
+	process.stdout.write('Uploading: %' + percent + '\r');
   });
 });
 app.get('/client.js', function (req, res) {
@@ -97,6 +92,7 @@ everyone.now.completeTask = function(taskid, data, retVal){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
     models.Job.commitResults(taskid, encodedData);
+    everyone.now.updateProgress(taskid,"lol","hello");
     retVal("OK");
 };
 
