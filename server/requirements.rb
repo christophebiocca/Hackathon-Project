@@ -4,7 +4,8 @@ requirements = %w(
     express
     node-uuid
     underscore
-	jade
+    jade
+    mongoose
 )
 
 requirements.each do |req|
