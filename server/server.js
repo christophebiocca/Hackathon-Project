@@ -35,7 +35,7 @@ everyone.now.getTask = function(retVal){
     // Right now, just return a fake task.
     retVal({
         taskid: uuid.v4(),
-        code: "function(k,v,out){out.collect(k,v);}",
+        code: "function(k,v,out){out(k,v);}",
         data: [{k: 1, v: 2}, {k:22, v:999}]
     });
 };
