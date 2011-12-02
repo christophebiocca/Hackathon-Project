@@ -36,7 +36,7 @@ app.post('/upload', function(req, res, next){
       console.log("File Uploaded Successfully");
       console.log(files);
       console.log(fields);
-      fs.readFileSync(files.upload.path, 'ascii', function (err, filetext) {
+      fs.readFile(files.upload.path, 'ascii', function (err, filetext) {
         if (err){
             console.error(err);
         }
