@@ -81,7 +81,8 @@ setInterval(models.cleanup, models.cleanupInterval);
 everyone.now.getTask = function(retVal){
     console.log("fuck");
     models.Job.fetchTask(function(newTask, code){
-        if(!newTask) return;
+        if (!newTask) return;
+        console.log("fuck2");
         var mapDatums = function(datum){
             return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
         };
