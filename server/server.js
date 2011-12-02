@@ -61,7 +61,7 @@ everyone.now.getTask = function(retVal){
     var taskid = uuid.v4();
 
     var code = String(function(k,v,output){
-val colorVal = function(x,y){
+	var colorVal = function(x,y){
 		
 		var i = 0;
 		var xnew = x;
@@ -74,7 +74,7 @@ val colorVal = function(x,y){
 			xnew = (xold^2) + (yold^2);
 			ynew = 2*xold*yold;
 
-			value = sqrt(xnew^2 + ynew^2);
+			value = Math.sqrt(xnew^2 + ynew^2);
 
 			if(value>2){
 				return i;
