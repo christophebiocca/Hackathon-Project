@@ -7,18 +7,23 @@ pause = function (millis) {
 }
 
 //the mapper. returns a string represent the result of the processing, which is then returned to the server.
-var mapData = function (dataString) {
+
+//if you change the paramaters, you have to change the eval() in onmessage
+var mapData = function (k,v,collector) {
     pause(5000);
-    return("no map function");
+    collector(k,v);
 };
 
 self.onmessage = function (event) {
     if (event.data.type === 'NewMapFunction'){
-        eval('mapData = function(dataString){pause(5000);return(' + event.data.NewFunction + '(dataString))};');
+        eval('mapData = function(k,v,collector){pause(5000);return(' + event.data.NewFunction + '(k,v,collector))};');
         self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){
-        self.postMessage({ 'type': 'DataReturn', 'Data': mapData(event.data.NewData) });
+        mapData(event.data.Key, event.data.Value, function (k, v) {
+            self.postMessage({ 'type': 'DataReturn', 'Data': {key:k,value:v}});
+        })
+        self.postMessage({ 'type': 'DataReturn', 'Data': mapData(event.data.Key, event.data.Value) });
         self.postMessage({ 'type': 'DataRequest' });
     };
 };
