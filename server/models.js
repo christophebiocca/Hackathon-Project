@@ -106,6 +106,42 @@ schemas.Job.statics.heartbeat = function(taskId){
     });
 };
 
+schemas.Job.statics.commitResults = function(taskId, data){
+    Job.findOne().or([{'mapRunning.taskId': taskId},
+                    {'reduceRunning.taskId': taskId}]).run(function(err, job){
+        if(err){
+            console.error(err);
+        } else if(job){
+            var hasTaskid = function(task){
+                return task.taskId == taskId;
+            };
+            var result;
+            var save = function(){
+                job.save(function(err){
+                    if(err){
+                        console.error(err);
+                    } else {
+                        console.log("Saved work result");
+                    }
+                });
+            };
+            if(result = _.find(job.mapRunning, hasTaskid)){
+                job.mapRunning = _.without(job.mapRunning, result);
+                job.mapOutput.push({data: data});
+                save();
+            } else if(result = _.find(job.reduceRunning, hasTaskid)){
+                job.reduceRunning = _.without(job.reduceRunning, result);
+                job.reduceOutput.push({data: data});
+                save();
+            } else {
+                console.error("WTF!");
+            }
+        } else {
+            console.error("No task found for id #", taskId, " WTF?");
+        }
+    });
+};
+
 schemas.Job.methods.fetchTask = function(ret){
     var job = this;
     var code;
