@@ -23,10 +23,9 @@ app.get('/', function(req, res){
 
 var models = require('./models');
 var mandelbrotstuff = require('./mandelbrot_task');
-console.log(mandelbrotstuff);
-mandelbrotstuff.mandelbrot(80);
 app.post('/upload', function(req, res, next){
 
+    mandelbrotstuff.mandelbrot(80);
   // connect-form adds the req.form object
   // we can (optionally) define onComplete, passing
   // the exception (if any) fields parsed, and files parsed
