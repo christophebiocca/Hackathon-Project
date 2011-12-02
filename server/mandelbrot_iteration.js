@@ -1,5 +1,5 @@
 <script type = "text/javascript">
-	val colorVal = function(x,y){
+	var colorVal = function(x,y){
 		
 		var i = 0;
 		var xnew = x;

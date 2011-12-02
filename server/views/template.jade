@@ -10,17 +10,16 @@ html
 			.CodeMirror {border: 1px solid black;width:49.5%;float:left;}
 	body
 		h1 Map Redux
-		form
+		form(action="/upload", method="post", enctype="multipart/form-data")
 			#codeEditors
 				textarea#map
 				textarea#reduce
 			br/
 			#bottom_bar
 				div(style="display:inline;")
-					input(type="file")
+					input(type="file",name="upload")
 				div(style="float:right")
 					input(type="submit")
-					input(type="submit", value="Show")
 		script(type="text/javascript")
 			var map_editor = CodeMirror.fromTextArea(document.getElementById("map"), {
 				mode: "javascript",

@@ -14,22 +14,21 @@ pause = function (millis) {
 var clientCode;
 
 var mapData = function (k,v,collector) {
-    pause(7000);
+    pause(300);
     clientCode(k,v,collector);
 };
 
 self.onmessage = function (event) {
     if (event.data.type === 'NewMapFunction'){
         eval('clientCode = ' + event.data.NewFunction + ';');
-        self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){
         var results = [];
-		_.each(event.data.NewData, function(datum){
-			mapData(datum.k, datum.v, function (k, v) {
+        _.each(event.data.NewData, function(datum){
+            mapData(datum.k, datum.v, function (k, v) {
                 results.push({'k':k,'v':v});
-			});
-		});
+            });
+        });
         self.postMessage({'type': 'DataReturn', 'Data': results});
     };
 };
