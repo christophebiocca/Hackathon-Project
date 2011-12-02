@@ -49,9 +49,9 @@
 				imageData.data[i+0] = color;
 				imageData.data[i+1] = color;
 				imageData.data[i+2] = color;
-				imageData.data[i+3] = color;
+				imageData.data[i+3] = 255;
 				i += 4;
-				//console.log(x+"  "+y+"  "+color);
+				console.log(x+"  "+y+"  "+color);
 			}
 		}
 		ctx.putImageData(imageData, 0, 0);
