@@ -20,6 +20,9 @@ app.use("/lib", express.static(__dirname + '/views/lib'));
 app.get('/', function(req, res){
     res.render('./template.jade');
 });
+
+var models = require('./models');
+var mandelbrotstuff = require('./mandelbrot_task.js');
 app.post('/upload', function(req, res, next){
 
   // connect-form adds the req.form object
@@ -74,25 +77,23 @@ var uuid = require('node-uuid');
 var _ = require('underscore');
 
 
-var models = require('./models');
 setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
     models.Job.fetchTask(function(newTask, code){
-        console.log(newTask);
         if(!newTask) return;
         var mapDatums = function(datum){
             return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
         };
         var data = _.map(newTask.data, mapDatums);
         var taskId = newTask.taskId;
-        console.log("Returning task ", taskId, code, data);
+        console.log("Distributing task #", taskId, code, data);
         retVal(taskId, code, data);
     });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
-    console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
+    console.log("Completed task #" + taskid + " results: " + JSON.stringify(data));
     var encodedData = _.map(data, function(datum){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
