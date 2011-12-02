@@ -36,7 +36,10 @@ app.post('/upload', function(req, res, next){
       console.log("File Uploaded Successfully");
       console.log(files);
       console.log(fields);
-      fs.readFile(files.upload.path, function (filetext) {
+      fs.readFile(files.upload.path, function (err, filetext) {
+        if (err){
+            console.error(err);
+        }
         console.log(filetext);
       });
     };
