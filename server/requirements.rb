@@ -3,6 +3,7 @@ requirements = %w(
     now
     express
     node-uuid
+    underscore
 )
 
 requirements.each do |req|
