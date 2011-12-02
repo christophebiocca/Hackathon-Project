@@ -4,10 +4,12 @@ $(document).ready(function () {
         worker.onmessage = function(event){
             if (event.data.type === "DataRequest"){
                 console.log('data requested');
-                now.ready(function(){
+                now.ready(function () {
                     now.getTask(function (taskId, code, data) {
-                        worker.postMessage({'type': 'NewMapFunction', 'NewFunction': String(code)});
-                        worker.postMessage({'type': 'NewData', 'NewData': data});
+                        worker.postMessage({ 'type': 'NewMapFunction', 'NewFunction': String(code) });
+                        _.each(data, function (datum) {
+                            worker.postMessage({ 'type': 'NewData', 'NewData': datum });
+                        });
                     });
                 });
             }
