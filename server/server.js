@@ -42,6 +42,8 @@ var uuid = require('node-uuid');
 var _ = require('underscore');
 
 
+var models = require('./models');
+setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
     // Right now, just return a fake task.
