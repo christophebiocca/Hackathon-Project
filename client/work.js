@@ -9,6 +9,7 @@ pause = function (millis) {
 //the mapper. returns a string represent the result of the processing, which is then returned to the server.
 var mapData = function(dataString){
     return("no map function");
+    pause(5000);
 };
 
 self.onmessage = function (event) {
