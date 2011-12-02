@@ -8,12 +8,16 @@ pause = function (millis) {
 
 //the mapper. returns a string represent the result of the processing, which is then returned to the server.
 var mapData = function(dataString){
-    pause(5000);
-    setTimeout();
-    return("test return");
+    return("no map function");
 };
+
 self.onmessage = function (event) {
-    self.postMessage({'type':'DataReturn', 'Data':mapData(event.data)});
-    self.postMessage({'type':'DataRequest'});
+    if (event.data.type === 'NewMapFunction'){
+        eval('mapData = ' + event.data.NewFunction);
+        self.postMessage({ 'type': 'DataRequest' });
+    };
+    if (event.data.type === 'NewData'){
+        self.postMessage({ 'type': 'DataReturn', 'Data': mapData(event.data.NewData) });
+        self.postMessage({ 'type': 'DataRequest' });
+    };
 };
-self.postMessage({'type':'DataRequest'});

@@ -4,11 +4,12 @@ $(document).ready(function () {
         worker.onmessage = function(event){
             if (event.data.type === "DataRequest"){
                 console.log('data requested');
-                worker.postMessage("test data");
+                worker.postMessage({'type': 'NewData', 'NewData':'A string'});
             }
             if (event.data.type === "DataReturn"){
                 console.log('data returned' + event.data.Data)
             }
         }
+        worker.postMessage({'type': 'NewMapFunction', 'NewFunction':"function(){return(\"new map\");}"});
     };
 });
