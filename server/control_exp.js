@@ -1,19 +1,19 @@
 
 	var colorVal = function(x,y){
 		
-		var i = 0;
-		var xnew = x;
-		var ynew = y;
-		var xold = x;
-		var yold = x;
+		//var i = 0;
+		var xnew = 0;
+		var ynew = 0;
+		var xold = 0;
+		var yold = 0;
 		var value;
-		for(i = 0; i<1000000; ++i){
+		for(i = 0; i<10; i++){
 
-			xnew = (xold^2) + (yold^2);
-			ynew = 2*xold*yold;
+			xnew = (xold^2) - (yold^2) + x;
+			ynew = (2*xold*yold) + y;
 
-			value = Math.sqrt(xnew^2 + ynew^2);
-
+			value = Math.sqrt((xnew^2) + (ynew^2));
+		
 			if(value>2){
 				return i;
 			}
@@ -28,8 +28,11 @@
 
 
 	var control_experiment = function(x,y){
-		var color = colorVal(x,y)/3921.5;
+		var color = colorVal(x,y);
+		//console.log("out of "+color);
+		color = color/3921.5;
 		color = parseInt(color);
+		//console.log("after div  "+color);
 		return color;
 	}
 	
@@ -40,14 +43,15 @@
 		var fs = require('fs');
 		imageData = c.createImageData(1600, 900);
 		var i=0;
-		for(y=-2; y<2; y+=0.0025){
-			for(x=-3.55; x<3.5; x+=0.0025){
+		for(y=-1; y<1; y+=0.01){
+			for(x=-2.0; x<1; x+=0.01){
 				color = control_experiment(x,y)
-				imageData.data[i+0] = color;
-				imageData.data[i+1] = color;
-				imageData.data[i+2] = color;
-				imageData.data[i+3] = color/255;
+				imageData.data[i+0] = 100;
+				imageData.data[i+1] = 100;
+				imageData.data[i+2] = 100;
+				imageData.data[i+3] = 1;
 				i += 4;
+				//console.log(x+"  "+y+"  "+color);
 			}
 		}
 		
