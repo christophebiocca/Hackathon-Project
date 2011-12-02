@@ -58,3 +58,5 @@ var mandelbrot = function(res){
         };
     });
 };
+
+export.mandelbrot = mandelbrot;
