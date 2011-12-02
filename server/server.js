@@ -24,7 +24,6 @@ app.get('/', function(req, res){
 var models = require('./models');
 var mandelbrotstuff = require('./mandelbrot_task');
 app.post('/upload', function(req, res, next){
-
     mandelbrotstuff.mandelbrot(80);
   // connect-form adds the req.form object
   // we can (optionally) define onComplete, passing
@@ -34,15 +33,14 @@ app.post('/upload', function(req, res, next){
       next(err);
     } else {
       console.log("File Uploaded Successfully");
-      res.redirect('back');
     }
+    res.render('./WatchScreen.jade');
   });
 
-  // We can add listeners for several form
-  // events such as "progress"
   req.form.on('progress', function(bytesReceived, bytesExpected){
     var percent = (bytesReceived / bytesExpected * 100) | 0;
-    process.stdout.write('Uploading: %' + percent + '\r');
+    	console.log('Uploadin: %'+percent+'\n');
+	process.stdout.write('Uploading: %' + percent + '\r');
   });
 });
 app.get('/client.js', function (req, res) {
@@ -100,6 +98,7 @@ everyone.now.completeTask = function(taskid, data, retVal){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
     models.Job.commitResults(taskid, encodedData);
+    everyone.now.updateProgress(taskid,"lol","hello");
     retVal("OK");
 };
 

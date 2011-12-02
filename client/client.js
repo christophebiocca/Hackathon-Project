@@ -11,7 +11,7 @@ $(document).ready(function () {
                 clearInterval(currentTaskIntervalID);
                 currentTaskIntervalID = setInterval(function () {
                     now.heartbeat(currentTaskId);
-                }, 500);
+                }, 5000);
             });
         };
         worker.onmessage = function(event){
