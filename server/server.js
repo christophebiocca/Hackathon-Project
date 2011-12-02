@@ -4,6 +4,7 @@ var work_js = require('fs').readFileSync('../client/work.js');
 var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
 var jade = require('fs').readFileSync('./jade.js');
+var express = require("express");
 
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
@@ -13,7 +14,8 @@ var app = require('express').createServer();
 app.configure(function(){
 	app.set("view options", {layout: false});
 });
-
+app.use("/css", express.static(__dirname + '/views/css'));
+app.use("/lib", express.static(__dirname + '/views/lib'));
 app.get('/', function(req, res){
     res.render('./template.jade');
 });
