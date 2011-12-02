@@ -3,18 +3,29 @@ var client_js = require('fs').readFileSync('../client/client.js');
 var work_js = require('fs').readFileSync('../client/work.js');
 var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
+var jade = require('fs').readFileSync('./jade.js');
+var express = require("express");
 
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
 var app = require('express').createServer();
 
+app.configure(function(){
+	app.set("view options", {layout: false});
+});
+app.use("/css", express.static(__dirname + '/views/css'));
+app.use("/lib", express.static(__dirname + '/views/lib'));
 app.get('/', function(req, res){
-    res.end(client_html);
+    res.render('./template.jade');
 });
 
 app.get('/client.js', function (req, res) {
     res.end(client_js);
+});
+
+app.get('/test_client.html', function (req, res) {
+    res.end(client_html);
 });
 
 app.get('/work.js', function (req, res) {
@@ -88,7 +99,7 @@ val colorVal = function(x,y){
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
-    console.log("completed task #" + taskid);
+    console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
     // Right now, we don't do anything.
     retVal("OK");
 };
