@@ -15,10 +15,10 @@ $(document).ready(function () {
             }, 500);
         };
         worker.onmessage = function(event){
-			if (event.data.type === "DataReturn"){
+            if (event.data.type === "DataReturn"){
                 clearInterval(currentTaskIntervalID);
-			    now.completeTask(currentTaskId, event.data.Data, function () { });
-			    startNewTask();
+                now.completeTask(currentTaskId, event.data.Data, function () { });
+                startNewTask();
             };
         };
         now.ready(function () {
