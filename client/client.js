@@ -4,9 +4,11 @@ $(document).ready(function () {
         worker.onmessage = function(event){
             if (event.data.type === "DataRequest"){
                 console.log('data requested');
-                now.getTask(function (taskId, code, data) {
-                    worker.postMessage({'type': 'NewMapFunction', 'NewFunction': String(code)});
-                    worker.postMessage({'type': 'NewData', 'NewData': data});
+                now.ready(function(){
+                    now.getTask(function (taskId, code, data) {
+                        worker.postMessage({'type': 'NewMapFunction', 'NewFunction': String(code)});
+                        worker.postMessage({'type': 'NewData', 'NewData': data});
+                    });
                 });
             }
             if (event.data.type === "DataReturn"){
