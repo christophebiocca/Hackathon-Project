@@ -6,6 +6,8 @@ requirements = %w(
     underscore
     jade
     mongoose
+    connect-form
+    formidable
 )
 
 requirements.each do |req|
