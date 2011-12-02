@@ -44,8 +44,6 @@ app.post('/upload', function(req, res, next){
       });
     };
     res.render('./WatchScreen.jade');
-    }
-    res.redirect('/');
   });
 
   req.form.on('progress', function(bytesReceived, bytesExpected){
