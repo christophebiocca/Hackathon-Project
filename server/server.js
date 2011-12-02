@@ -1,4 +1,5 @@
 var client_html = require('fs').readFileSync('../client/test_client.html');
+var underscore = require('fs').readFileSync('./underscore.js');
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
@@ -6,6 +7,10 @@ var app = require('express').createServer();
 
 app.get('/', function(req, res){
     res.end(client_html);
+});
+
+app.get('/underscore.js', function(req, response){
+    response.end(underscore);
 });
 
 app.get('Drew put path here!', function(req, res){
