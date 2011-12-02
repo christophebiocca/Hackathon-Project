@@ -9,6 +9,7 @@ $(document).ready(function () {
                 worker.postMessage({ 'type': 'NewMapFunction', 'NewFunction': String(code) });
                 worker.postMessage({ 'type': 'NewData', 'NewData': data });
             });
+            clearInterval(currentTaskIntervalID);
             currentTaskIntervalID = setInterval(function () {
                 now.heartbeat(currentTaskId);
             }, 500);
