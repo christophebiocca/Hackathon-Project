@@ -21,7 +21,6 @@ var mapData = function (k,v,collector) {
 self.onmessage = function (event) {
     if (event.data.type === 'NewMapFunction'){
         eval('clientCode = ' + event.data.NewFunction + ';');
-        self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){
         var results = [];
