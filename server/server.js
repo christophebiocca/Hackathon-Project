@@ -23,6 +23,7 @@ app.get('/work.js', function (req, res) {
 
 app.get('/jquery-1.7.1.js', function (req, res) {
     res.end(jquery_js);
+});
 
 app.get('/underscore.js', function(req, response){
     response.end(underscore);
