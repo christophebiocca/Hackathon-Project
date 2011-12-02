@@ -23,8 +23,10 @@ $(document).ready(function () {
             
 			if (event.data.type === "DataReturn"){
                 console.log('data returned');
-                console.log(event.data.Data.k);
-                console.log(event.data.Data.v);
+				_.each(event.data.Data, function(Datum){
+					console.log(Datum.k.x);
+					console.log(Datum);
+				});
             };
         };
         now.ready(function () {
