@@ -13,6 +13,7 @@ $(document).ready(function () {
                     now.heartbeat(currentTaskId);
                 }, 500);
             });
+        };
         worker.onmessage = function(event){
             if (event.data.type === "DataReturn"){
                 clearInterval(currentTaskIntervalID);
