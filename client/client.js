@@ -11,9 +11,14 @@ $(document).ready(function () {
                 console.log(event.data.Data);
             }
         }
-        worker.postMessage({ 'type': 'NewData', 'NewData': 'A string' });
-        worker.postMessage({'type': 'NewMapFunction', 'NewFunction':String(function(k,v,collector){
-            collector(k,v);
-        })});
+        now.ready(function () {
+            now.getTask(function (taskId, code, data) {
+                    worker.postMessage({ 'type': 'NewMapFunction', 'NewFunction': String(code)});
+                    _.each(data, function(datum){
+                        worker.postMessage({ 'type': 'NewData', 'NewData': datum });
+                    });
+                });
+            });
+        });
     };
 });
