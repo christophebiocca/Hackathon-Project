@@ -14,7 +14,7 @@ var mapData = function(dataString){
 
 self.onmessage = function (event) {
     if (event.data.type === 'NewMapFunction'){
-        eval('mapData = ' + event.data.NewFunction);
+        eval('mapData = ' + 'function(){pause(5000);' + event.data.NewFunction + '(dataString)');
         self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){

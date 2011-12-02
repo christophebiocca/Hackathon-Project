@@ -11,6 +11,6 @@ $(document).ready(function () {
             }
         }
         worker.postMessage({ 'type': 'NewData', 'NewData': 'A string' });
-        worker.postMessage({'type': 'NewMapFunction', 'NewFunction':"function(){pause(5000);return(\"new map\");}"});
+        worker.postMessage({'type': 'NewMapFunction', 'NewFunction':"function(){return(\"new map\");}"});
     };
 });
