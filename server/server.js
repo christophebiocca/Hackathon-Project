@@ -5,11 +5,12 @@ var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
 var jade = require('fs').readFileSync('./jade.js');
 var express = require("express");
+var formidable = require('formidable');
+var http = require('http');
+var sys = require('sys');
+var form = require('connect-form');
 
-var httpServer = require('http').createServer(function(req, response){
-    response.end(html);
-})
-var app = require('express').createServer();
+var app = require('express').createServer(form({ keepExtensions: true }));
 
 app.configure(function(){
 	app.set("view options", {layout: false});
@@ -19,7 +20,27 @@ app.use("/lib", express.static(__dirname + '/views/lib'));
 app.get('/', function(req, res){
     res.render('./template.jade');
 });
+app.post('/upload', function(req, res, next){
 
+  // connect-form adds the req.form object
+  // we can (optionally) define onComplete, passing
+  // the exception (if any) fields parsed, and files parsed
+  req.form.complete(function(err, fields, files){
+    if (err) {
+      next(err);
+    } else {
+      console.log("File Uploaded Successfully");
+      res.redirect('back');
+    }
+  });
+
+  // We can add listeners for several form
+  // events such as "progress"
+  req.form.on('progress', function(bytesReceived, bytesExpected){
+    var percent = (bytesReceived / bytesExpected * 100) | 0;
+    process.stdout.write('Uploading: %' + percent + '\r');
+  });
+});
 app.get('/client.js', function (req, res) {
     res.end(client_js);
 });
@@ -59,12 +80,13 @@ setInterval(models.cleanup, models.cleanupInterval);
 everyone.now.getTask = function(retVal){
     models.Job.fetchTask(function(newTask, code){
         console.log(newTask);
+        if(!newTask) return;
         var mapDatums = function(datum){
             return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
         };
         var data = _.map(newTask.data, mapDatums);
         var taskId = newTask.taskId;
-        console.log("Returning task #", taskId);
+        console.log("Returning task ", taskId, code, data);
         retVal(taskId, code, data);
     });
 };
