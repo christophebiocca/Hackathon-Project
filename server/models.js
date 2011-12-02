@@ -23,12 +23,12 @@ schemas.RunningTask = new Schema({
     data: [schemas.Datum]
 });
 
-var jobStatuses = ["Map", "Sort", "Reduce", "Done"];
+var jobStatuses = ["Map", "Reduce", "Done"];
 
 var Job;
 schemas.Job = new Schema({
     jobId: {type: String, default:uuid.v4, index:true},
-    status: {type: String, enum:jobStatuses, index:true},
+    status: {type: String, enum:jobStatuses, index:true, default:"Map"},
     jobsAvailable: {type: Boolean, index:true},
     mapper: {type: String},
     mapInput: [schemas.Task],
@@ -76,6 +76,30 @@ schemas.Job.methods.dropRunning = function(min_last_heartbeat){
             });
         }
     });
+};
+
+schemas.Job.methods.checkMapCompletion = function(){
+    if(!(this.mapInput.length || this.mapRunning.length)){
+        var output = [];
+        _.each(this.mapOutput, function(task){
+            _.each(task.data, function(datum){
+                output.push({key:datum.key, value:datum.value});
+            });
+        });
+        this.reduceInput = _.map(_.groupBy(output, 'key'), 
+            function(pairs, key){
+                return {data:[{key: key, value: JSON.stringify(_.pluck(pairs,'value'))}]};
+            }
+        );
+        this.mapOutput = [];
+        this.status = "Reduce";
+    }
+};
+
+schemas.Job.methods.checkReduceCompletion = function(){
+    if(!(this.reduceInput.length || this.reduceRunning.length)){
+        this.status = "Done";
+    }
 };
 
 schemas.Job.statics.heartbeat = function(taskId){
@@ -132,10 +156,12 @@ schemas.Job.statics.commitResults = function(taskId, data){
             if(result = _.find(job.mapRunning, hasTaskid)){
                 job.mapRunning = _.without(job.mapRunning, result);
                 job.mapOutput.push({data: data});
+                job.checkMapCompletion();
                 save();
             } else if(result = _.find(job.reduceRunning, hasTaskid)){
                 job.reduceRunning = _.without(job.reduceRunning, result);
                 job.reduceOutput.push({data: data});
+                job.checkReduceCompletion();
                 save();
             } else {
                 console.error("WTF!");

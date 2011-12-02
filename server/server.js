@@ -65,7 +65,7 @@ everyone.now.getTask = function(retVal){
         };
         var data = _.map(newTask.data, mapDatums);
         var taskId = newTask.taskId;
-        console.log("Returning task #", taskId);
+        console.log("Returning task ", taskId, code, data);
         retVal(taskId, code, data);
     });
 };
