@@ -28,7 +28,6 @@ app.post('/upload', function(req, res, next){
       console.log("File Uploaded Successfully");
     }
     res.render('./WatchScreen.jade');
-	res.end();
   });
 
   req.form.on('progress', function(bytesReceived, bytesExpected){
@@ -93,7 +92,7 @@ everyone.now.completeTask = function(taskid, data, retVal){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
     models.Job.commitResults(taskid, encodedData);
-this.now.updateProgress(taskid,"lol","hello");
+    everyone.now.updateProgress(taskid,"lol","hello");
     retVal("OK");
 };
 
