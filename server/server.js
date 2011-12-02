@@ -81,6 +81,7 @@ var _ = require('underscore');
 setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
+    console.log("fuck");
     models.Job.fetchTask(function(newTask, code){
         if(!newTask) return;
         var mapDatums = function(datum){
