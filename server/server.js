@@ -9,6 +9,7 @@ var formidable = require('formidable');
 var http = require('http');
 var sys = require('sys');
 var form = require('connect-form');
+var fs = require('fs');
 
 var app = require('express').createServer(form({ keepExtensions: true }));
 
@@ -20,15 +21,29 @@ app.use("/lib", express.static(__dirname + '/views/lib'));
 app.get('/upload', function(req, res){
     res.render('./template.jade');
 });
+
+var models = require('./models');
+var mandelbrotstuff = require('./mandelbrot_task');
 app.post('/upload', function(req, res, next){
+    mandelbrotstuff.mandelbrot(80);
+  // connect-form adds the req.form object
+  // we can (optionally) define onComplete, passing
+  // the exception (if any) fields parsed, and files parsed
   req.form.complete(function(err, fields, files){
     if (err) {
       next(err);
     } else {
       console.log("File Uploaded Successfully");
-      console.log("fields: ", fields, "files: ", files);
-    }
-    res.redirect('/');
+      console.log(files);
+      console.log(fields);
+      fs.readFile(files.upload.path, 'ascii', function (err, filetext) {
+        if (err){
+            console.error(err);
+        }
+        console.log(filetext);
+      });
+    };
+    res.render('./WatchScreen.jade');
   });
 
   req.form.on('progress', function(bytesReceived, bytesExpected){
@@ -75,25 +90,23 @@ var uuid = require('node-uuid');
 var _ = require('underscore');
 
 
-var models = require('./models');
 setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
     models.Job.fetchTask(function(newTask, code){
-        //console.log(newTask);
-        if(!newTask) return;
+        if (!newTask) return;
         var mapDatums = function(datum){
             return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
         };
         var data = _.map(newTask.data, mapDatums);
         var taskId = newTask.taskId;
-        //console.log("Returning task ", taskId, code, data);
+        console.log("Distributing task #", taskId, code, data);
         retVal(taskId, code, data);
     });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
-    //console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
+    console.log("Completed task #" + taskid + " results: " + JSON.stringify(data));
     var encodedData = _.map(data, function(datum){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
@@ -103,6 +116,6 @@ everyone.now.completeTask = function(taskid, data, retVal){
 };
 
 everyone.now.heartbeat = function(taskid){
-    //console.log("Got heartbeat for task #" + taskid);
+    console.log("Got heartbeat for task #" + taskid);
     models.Job.heartbeat(taskid);
 };

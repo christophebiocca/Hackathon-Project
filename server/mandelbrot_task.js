@@ -4,6 +4,7 @@ var mandelbrot = function(res){
     var job = new Job();
 
     job.mapper = String(function(k,v,output){
+        output(k,v);
         var colorVal = function(x,y){    
             var i = 0;
             var xnew = x;
@@ -55,8 +56,8 @@ var mandelbrot = function(res){
             console.error(err);
         } else {
             console.info("Added a mandelbrot task");
-        }
+        };
     });
-}
+};
 
-mandelbrot(80);
+exports.mandelbrot = mandelbrot;
