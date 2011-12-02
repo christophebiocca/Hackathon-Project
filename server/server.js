@@ -53,7 +53,7 @@ everyone.now.getTask = function(retVal){
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
-    console.log("completed task #" + taskid);
+    console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
     // Right now, we don't do anything.
     retVal("OK");
 };

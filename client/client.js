@@ -22,10 +22,7 @@ $(document).ready(function () {
             };
             
 			if (event.data.type === "DataReturn"){
-                console.log('data returned');
-                console.log(event.data.Data[0].k);
-                console.log(event.data.Data[0].v);
-                console.log(event.data)
+                now.completeTask(currentTaskId, event.data.Data, function () {});
             };
         };
         now.ready(function () {
