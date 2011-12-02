@@ -23,6 +23,7 @@ app.get('/', function(req, res){
 
 var models = require('./models');
 var mandelbrotstuff = require('./mandelbrot_task.js');
+mandelbrot(80);
 app.post('/upload', function(req, res, next){
 
   // connect-form adds the req.form object

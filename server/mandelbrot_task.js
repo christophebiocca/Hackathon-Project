@@ -55,6 +55,6 @@ var mandelbrot = function(res){
             console.error(err);
         } else {
             console.info("Added a mandelbrot task");
-        }
+        };
     });
-}
+};
