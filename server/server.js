@@ -3,14 +3,19 @@ var client_js = require('fs').readFileSync('../client/client.js');
 var work_js = require('fs').readFileSync('../client/work.js');
 var jquery_js = require('fs').readFileSync('../client/jquery-1.7.1.js')
 var underscore = require('fs').readFileSync('./underscore.js');
+var jade = require('fs').readFileSync('./jade.js');
 
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
 var app = require('express').createServer();
 
+app.configure(function(){
+	app.set("view options", {layout: false});
+});
+
 app.get('/', function(req, res){
-    res.end(client_html);
+    res.render('./template.jade');
 });
 
 app.get('/client.js', function (req, res) {
@@ -42,12 +47,22 @@ var uuid = require('node-uuid');
 var _ = require('underscore');
 
 
+var models = require('./models');
+setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
     // Right now, just return a fake task.
     var taskid = uuid.v4();
-    var code = String(function(k,v,out){out(k,v);});
-    var data = [{k: 1, v: 2}, {k:22, v:999}];
+
+    var code = String(function(k,v,output){
+
+		var color = colorVal(k.x,k.y)/3921.5;
+		color = parseInt(color);
+		output(k,color);
+	});
+    
+    var data = [{k: {x:1, y:1}, v: 2}, {k:{x:0.5, y:0.5}, v:999}];
+
     console.log('Sent out task #' + taskid);
     retVal(taskid, code, data);
 };
