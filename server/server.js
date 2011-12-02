@@ -47,7 +47,7 @@ everyone.now.getTask = function(retVal){
     // Right now, just return a fake task.
     var taskid = uuid.v4();
     var code = String(function(k,v,out){out(k,v);});
-    var data = [{k: 1, v: 2}, {k:22, v:999}];
+    var data = [{k: {x:1, y:1}, v: 2}, {k:{x:0.5, y:0.5}, v:999}];
     console.log('Sent out task #' + taskid);
     retVal(taskid, code, data);
 };
