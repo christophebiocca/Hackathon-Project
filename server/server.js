@@ -1,4 +1,6 @@
 var client_html = require('fs').readFileSync('../client/test_client.html');
+var client_js = require('fs').readFileSync('../client/client.js');
+var work_js = require('fs').readFileSync('../client/work.js');
 var httpServer = require('http').createServer(function(req, response){
     response.end(html);
 })
@@ -8,8 +10,12 @@ app.get('/', function(req, res){
     res.end(client_html);
 });
 
-app.get('Drew put path here!', function(req, res){
-    res.end('YOU NEED A FILE PATH HERE.');
+app.get('client.js', function (req, res) {
+    res.end(client_js);
+});
+
+app.get('work.js', function (req, res) {
+    res.end(work_js);
 });
 
 app.listen(8080);
