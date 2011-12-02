@@ -9,14 +9,16 @@ pause = function (millis) {
 //the mapper. returns a string represent the result of the processing, which is then returned to the server.
 
 //if you change the paramaters, you have to change the eval() in onmessage
+var clientCode;
+
 var mapData = function (k,v,collector) {
     pause(5000);
-    collector(k,v);
+    clientCode(k,v,collector);
 };
 
 self.onmessage = function (event) {
     if (event.data.type === 'NewMapFunction'){
-        eval('mapData = function(k,v,collector){pause(5000);return(' + event.data.NewFunction + '(k,v,collector))};');
+        eval('clientCode = ' + event.data.NewFunction + ';');
         self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){
