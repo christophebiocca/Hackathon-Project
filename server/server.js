@@ -9,6 +9,7 @@ var formidable = require('formidable');
 var http = require('http');
 var sys = require('sys');
 var form = require('connect-form');
+var fs = require('fs');
 
 var app = require('express').createServer(form({ keepExtensions: true }));
 
