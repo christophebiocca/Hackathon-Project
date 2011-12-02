@@ -18,7 +18,11 @@ html
 				cell2.innerHTML = status;
 
 				var cell3 = row.insertCell(2);
-				cell3.innerHTML = percentage;
+				if(percentage==1.0){
+					$(cell3).html($('<a href="/results/' + id + '">' + id + '</a>'));
+				} else {
+					cell3.innerHTML = String((percentage*100).toFixed(2)) + '%';
+				}
 			}
 		script(type="text/javascript", src="jquery-1.7.1.js")
 		script(type="text/javascript", src="underscore.js")
