@@ -24,6 +24,10 @@ app.get('/client.js', function (req, res) {
     res.end(client_js);
 });
 
+app.get('/test_client.html', function (req, res) {
+    res.end(client_html);
+});
+
 app.get('/work.js', function (req, res) {
     res.end(work_js);
 });
