@@ -24,7 +24,7 @@ self.onmessage = function (event) {
         self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){
-		_.each(data, function(datum){
+		_.each(event.data.NewData, function(datum){
 			mapData(event.datum.k, event.datum.v, function (k, v) {
 				self.postMessage({ 'type': 'DataReturn', 'Data': {'k':k,'v':v}});
 			});
