@@ -17,17 +17,22 @@
 		<textarea id="reduce" name="reduce"></textarea>
       </div>
 	  <br/>
-      <div style="float:right">
-        <input type="submit">
-		<input type="submit" value="Show">
-      </div>
+	  <div id="bottom_bar">
+		  <div style="display:inline;">
+			<input type="file">
+		  </div>
+		  <div style="float:right">
+			<input type="submit">
+			<input type="submit" value="Show">
+		  </div>
+	  </div>
     </form>
 	<script type="text/javascript">
-	var meditor = CodeMirror.fromTextArea(document.getElementById("map"), {
+	var map_editor = CodeMirror.fromTextArea(document.getElementById("map"), {
 		mode: "javascript",
 		lineNumbers: true,
     });
-    var reditor = CodeMirror.fromTextArea(document.getElementById("reduce"), {
+    var reduce_editor = CodeMirror.fromTextArea(document.getElementById("reduce"), {
 		mode: "javascript",
 		lineNumbers: true,
     });
