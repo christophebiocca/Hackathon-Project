@@ -43,8 +43,8 @@
 		var fs = require('fs');
 		imageData = ctx.createImageData(1600, 900);
 		var i=0;
-		for(y=-1; y<1; y+=0.01){
-			for(x=-2.0; x<1; x+=0.01){
+		for(y=0; y<900; y++){
+			for(x=-0; x<1600; x++){
 				color = control_experiment(x,y)
 				imageData.data[i+0] = 200;
 				imageData.data[i+1] = 100;
