@@ -10,6 +10,7 @@ $(document).ready(function () {
                 console.log('data returned' + event.data.Data)
             }
         }
-        worker.postMessage({'type': 'NewMapFunction', 'NewFunction':"function(){return(\"new map\");}"});
+        worker.postMessage({ 'type': 'NewData', 'NewData': 'A string' });
+        worker.postMessage({'type': 'NewMapFunction', 'NewFunction':"function(){return(\"new map\");pause(5000);}"});
     };
 });
