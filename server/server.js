@@ -70,8 +70,8 @@ app.get('/', function(req,res){
     res.render('./WatchScreen.jade');
 });
 
-app.get('results/:id', function(req,res){
-    Job.findOne({jobId: req.params.id}, function(err, job){
+app.get('/results/:id', function(req,res){
+    models.Job.findOne({jobId: req.params.id}, function(err, job){
         if(err){
             console.error(err);
         } else {
