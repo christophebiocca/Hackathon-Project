@@ -34,7 +34,7 @@ app.post('/upload', function(req, res, next){
     } else {
       console.log("File Uploaded Successfully");
       console.log(files);
-      console.lof(fields);
+      console.log(fields);
     }
     res.render('./WatchScreen.jade');
   });
