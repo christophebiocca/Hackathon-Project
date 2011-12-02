@@ -12,8 +12,6 @@ $(document).ready(function () {
                         worker.postMessage({ 'type': 'NewData', 'NewData': data });
                     });
                 });
-				
-				
             }
             
 			if (event.data.type === "DataReturn"){
@@ -22,12 +20,19 @@ $(document).ready(function () {
                 console.log(event.data.Data.v);
             }
         }
-		
+
+
         now.ready(function () {
+            var currentTaskId;
             now.getTask(function (taskId, code, data) {
+                currentTaskId = taskId;
                 worker.postMessage({ 'type': 'NewMapFunction', 'NewFunction': String(code)});
                 worker.postMessage({ 'type': 'NewData', 'NewData': data });
             });
+
+            setInterval(function () {
+                now.heartbeat(currentTaskId);
+            }, 5000);
         });
     };
 });
