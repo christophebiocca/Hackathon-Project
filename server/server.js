@@ -17,7 +17,7 @@ app.configure(function(){
 });
 app.use("/css", express.static(__dirname + '/views/css'));
 app.use("/lib", express.static(__dirname + '/views/lib'));
-app.get('/', function(req, res){
+app.get('/upload', function(req, res){
     res.render('./template.jade');
 });
 app.post('/upload', function(req, res, next){
@@ -27,7 +27,7 @@ app.post('/upload', function(req, res, next){
     } else {
       console.log("File Uploaded Successfully");
     }
-    res.render('./WatchScreen.jade');
+    res.redirect('/');
   });
 
   req.form.on('progress', function(bytesReceived, bytesExpected){
@@ -36,6 +36,11 @@ app.post('/upload', function(req, res, next){
 	process.stdout.write('Uploading: %' + percent + '\r');
   });
 });
+
+app.get('/', function(req,res){
+    res.render('./WatchScreen.jade');
+});
+
 app.get('/client.js', function (req, res) {
     res.end(client_js);
 });
