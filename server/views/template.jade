@@ -12,8 +12,20 @@ html
 		h1 Map Redux
 		form(action="/upload", method="post", enctype="multipart/form-data")
 			#codeEditors
+				table(width="100%")
+					tr
+						td
+							h4(style="width:49.5%;") var map = function(k,v,out){
+						td	
+							h4(style="width:49.5%;")  var reduce = function(k,v,out){
 				textarea(name="map")#map
 				textarea(name="reduce")#reduce
+				table(width="100%")
+					tr
+						td
+							h4(style="width:49.5%;") }
+						td	
+							h4(style="width:49.5%;") }
 			br/
 			#bottom_bar
 				div(style="display:inline;")
