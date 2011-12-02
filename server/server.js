@@ -46,8 +46,13 @@ var _ = require('underscore');
 everyone.now.getTask = function(retVal){
     // Right now, just return a fake task.
     var taskid = uuid.v4();
-    var code = String(function(k,v,out){out(k,v);});
-    var data = [{k: 1, v: 2}, {k:22, v:999}];
+    var code = String(function(k,v,output){
+
+		var color = colorVal(k.x,k.y)/3921.5;
+		color = parseInt(color);
+		output(k,color);
+	});
+    var data = [{k: {1 1}, v: 2}, {k:{0.5 0.5}, v:999}];
     console.log('Sent out task #' + taskid);
     retVal(taskid, code, data);
 };
