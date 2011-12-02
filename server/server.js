@@ -10,11 +10,11 @@ app.get('/', function(req, res){
     res.end(client_html);
 });
 
-app.get('client.js', function (req, res) {
+app.get('/client.js', function (req, res) {
     res.end(client_js);
 });
 
-app.get('work.js', function (req, res) {
+app.get('/work.js', function (req, res) {
     res.end(work_js);
 });
 
