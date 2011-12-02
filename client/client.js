@@ -15,14 +15,10 @@ $(document).ready(function () {
             }, 500);
         };
         worker.onmessage = function(event){
-            if (event.data.type === "DataRequest"){     //if the worker requests data
-                console.log('data requested');          //for debugging
-                
-				startNewTask();
-            };
-            
-			if (event.data.type === "DataReturn"){
-                now.completeTask(currentTaskId, event.data.Data, function () {});
+            if (event.data.type === "DataReturn"){
+                clearInterval(currentTaskIntervalID);
+                now.completeTask(currentTaskId, event.data.Data, function () { });
+                startNewTask();
             };
         };
         now.ready(function () {

@@ -3,9 +3,9 @@ var uuid = require('node-uuid');
 
 var getData = function(){
     var dataset = [];
-    for(var i = 0; i < 1; ++i){
+    for(var i = 0; i < 2; ++i){
         var input = [];
-        for(var j = 0; j < 10; ++j){
+        for(var j = 0; j < 2; ++j){
             input.push({key: JSON.stringify('a'+i), value: JSON.stringify(j)}); 
         }
         dataset.push({data: input});
