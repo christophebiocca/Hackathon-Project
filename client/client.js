@@ -8,12 +8,12 @@ $(document).ready(function () {
                 currentTaskId = taskId;
                 worker.postMessage({ 'type': 'NewMapFunction', 'NewFunction': String(code) });
                 worker.postMessage({ 'type': 'NewData', 'NewData': data });
+                clearInterval(currentTaskIntervalID);
+                currentTaskIntervalID = setInterval(function () {
+                    now.heartbeat(currentTaskId);
+                }, 500);
+            };
             });
-            clearInterval(currentTaskIntervalID);
-            currentTaskIntervalID = setInterval(function () {
-                now.heartbeat(currentTaskId);
-            }, 500);
-        };
         worker.onmessage = function(event){
             if (event.data.type === "DataReturn"){
                 clearInterval(currentTaskIntervalID);
