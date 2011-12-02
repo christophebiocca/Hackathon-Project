@@ -7,7 +7,7 @@
 		var xold = 0;
 		var yold = 0;
 		var value;
-		for(i = 0; i<100; i++){
+		for(i = 0; i<256; i++){
 
 			xnew = (xold^2) - (yold^2) + x;
 			ynew = (2*xold*yold) + y;
@@ -22,7 +22,7 @@
 			yold = ynew;
 			xold = xnew;
 		}
-		return 100;
+		return 255;
 
 	}
 
@@ -30,7 +30,7 @@
 	var control_experiment = function(x,y){
 		var color = colorVal(x,y);
 		//console.log("out of "+color);
-		color = color*2.55;
+		color = color;
 		color = parseInt(color);
 		//console.log("after div  "+color);
 		return color;
@@ -43,15 +43,15 @@
 		var fs = require('fs');
 		imageData = ctx.createImageData(1600, 900);
 		var i=0;
-		for(y=-1; y<1; y+=0.0022){
-			for(x=-2; x<1; x+=0.001875){
+		for(y=-4.5; y<4.5; y+=0.01){
+			for(x=-8; x<8; x+=0.01){
 				color = control_experiment(x,y)
 				imageData.data[i+0] = color;
 				imageData.data[i+1] = color;
 				imageData.data[i+2] = color;
-				imageData.data[i+3] = color;
+				imageData.data[i+3] = 255;
 				i += 4;
-				//console.log(x+"  "+y+"  "+color);
+			//	console.log(x+"  "+y+"  "+color);
 			}
 		}
 		ctx.putImageData(imageData, 0, 0);
