@@ -94,32 +94,19 @@ setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
     models.Job.fetchTask(function(newTask, code){
-<<<<<<< HEAD
         if (!newTask) return;
-=======
-        //console.log(newTask);
-        if(!newTask) return;
->>>>>>> d85560dfd159579ea735375b2bb80995a7284792
         var mapDatums = function(datum){
             return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
         };
         var data = _.map(newTask.data, mapDatums);
         var taskId = newTask.taskId;
-<<<<<<< HEAD
         console.log("Distributing task #", taskId, code, data);
-=======
-        //console.log("Returning task ", taskId, code, data);
->>>>>>> d85560dfd159579ea735375b2bb80995a7284792
         retVal(taskId, code, data);
     });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
-<<<<<<< HEAD
     console.log("Completed task #" + taskid + " results: " + JSON.stringify(data));
-=======
-    //console.log("completed task #" + taskid + " results: " + JSON.stringify(data));
->>>>>>> d85560dfd159579ea735375b2bb80995a7284792
     var encodedData = _.map(data, function(datum){
         return {key: JSON.stringify(datum.k), value: JSON.stringify(datum.v)};
     });
@@ -129,6 +116,6 @@ everyone.now.completeTask = function(taskid, data, retVal){
 };
 
 everyone.now.heartbeat = function(taskid){
-    //console.log("Got heartbeat for task #" + taskid);
+    console.log("Got heartbeat for task #" + taskid);
     models.Job.heartbeat(taskid);
 };
