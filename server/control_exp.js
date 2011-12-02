@@ -7,7 +7,7 @@
 		var xold = 0;
 		var yold = 0;
 		var value;
-		for(i = 0; i<10; i++){
+		for(i = 0; i<100; i++){
 
 			xnew = (xold^2) - (yold^2) + x;
 			ynew = (2*xold*yold) + y;
@@ -22,7 +22,7 @@
 			yold = ynew;
 			xold = xnew;
 		}
-		return 10;
+		return 100;
 
 	}
 
@@ -30,7 +30,7 @@
 	var control_experiment = function(x,y){
 		var color = colorVal(x,y);
 		//console.log("out of "+color);
-		color = color*25.5;
+		color = color*2.55;
 		color = parseInt(color);
 		//console.log("after div  "+color);
 		return color;
