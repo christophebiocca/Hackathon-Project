@@ -43,13 +43,13 @@
 		var fs = require('fs');
 		imageData = ctx.createImageData(1600, 900);
 		var i=0;
-		for(y=-1; y<1; y+=0.0022){
-			for(x=-2; x<1; x+=0.001875){
+		for(y=-4.5; y<4.5; y+=0.01){
+			for(x=-8; x<8; x+=0.01){
 				color = control_experiment(x,y)
 				imageData.data[i+0] = color;
 				imageData.data[i+1] = color;
 				imageData.data[i+2] = color;
-				imageData.data[i+3] = 127+(color/2);
+				imageData.data[i+3] = 255;
 				i += 4;
 			//	console.log(x+"  "+y+"  "+color);
 			}
