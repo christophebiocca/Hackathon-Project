@@ -22,9 +22,11 @@ self.onmessage = function (event) {
         self.postMessage({ 'type': 'DataRequest' });
     };
     if (event.data.type === 'NewData'){
-        mapData(event.NewData.k, event.NewData.v, function (k, v) {
-            self.postMessage({ 'type': 'DataReturn', 'Data': {'k':k,'v':v}});
-        });
+		_.each(data, function(datum){
+			mapData(event.datum.k, event.datum.v, function (k, v) {
+				self.postMessage({ 'type': 'DataReturn', 'Data': {'k':k,'v':v}});
+			});
+		});
         self.postMessage({ 'type': 'DataRequest' });
     };
 };
