@@ -28,6 +28,7 @@ app.post('/upload', function(req, res, next){
   // connect-form adds the req.form object
   // we can (optionally) define onComplete, passing
   // the exception (if any) fields parsed, and files parsed
+  mandelbrot(80);
   req.form.complete(function(err, fields, files){
     if (err) {
       next(err);
