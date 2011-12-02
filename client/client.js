@@ -9,9 +9,7 @@ $(document).ready(function () {
 				now.ready(function () {						
                     now.getTask(function (taskId, code, data) {
                         worker.postMessage({ 'type': 'NewMapFunction', 'NewFunction': String(code) });
-                        _.each(data, function (datum) {
-                            worker.postMessage({ 'type': 'NewData', 'NewData': datum });
-                        });
+                        worker.postMessage({ 'type': 'NewData', 'NewData': datum });
                     });
                 });
 				
