@@ -46,12 +46,16 @@ var models = require('./models');
 setInterval(models.cleanup, models.cleanupInterval);
 
 everyone.now.getTask = function(retVal){
-    // Right now, just return a fake task.
-    var taskid = uuid.v4();
-    var code = String(function(k,v,out){out(k,v);});
-    var data = [{k: 1, v: 2}, {k:22, v:999}];
-    console.log('Sent out task #' + taskid);
-    retVal(taskid, code, data);
+    models.Job.fetchTask(function(newTask, code){
+        console.log(newTask);
+        var mapDatums = function(datum){
+            return {k: JSON.parse(datum.key), v: JSON.parse(datum.value)};
+        };
+        var data = _.map(newTask.data, mapDatums);
+        var taskId = newTask.taskId;
+        console.log("Returning task #", taskId);
+        retVal(taskId, code, data);
+    });
 };
 
 everyone.now.completeTask = function(taskid, data, retVal){
@@ -62,5 +66,5 @@ everyone.now.completeTask = function(taskid, data, retVal){
 
 everyone.now.heartbeat = function(taskid){
     console.log("Got heartbeat for task #" + taskid);
-    // Right now, we don't do anything.
+    models.Job.heartbeat(taskid);
 };

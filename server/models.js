@@ -76,15 +76,43 @@ schemas.Job.methods.dropRunning = function(min_last_heartbeat){
     });
 };
 
-schemas.Job.statics.heartbeat = function(taskid){
-    
+schemas.Job.statics.heartbeat = function(taskId){
+    Job.findOne().or([{'mapRunning.taskId': taskId},
+                    {'reduceRunning.taskId': taskId}]).run(function(err, job){
+        if(err){
+            console.error(err);
+        } else {
+            var hasTaskid = function(task){
+                return task.taskId == taskId;
+            };
+            var result;
+            if(result = _.find(job.mapRunning, hasTaskid)){
+                result.heartbeat = new Date();
+            } else if(result = _.find(job.reduceRunning, hasTaskid)){
+                result.heartbeat = new Date()
+            } else {
+                console.error("WTF!");
+            }
+            if(result){
+                job.save(function(err){
+                    if(err){
+                        console.error(err);
+                    } else {
+                        console.log("Updated heartbeat");
+                    }
+                });
+            }
+        }
+    });
 };
 
 schemas.Job.methods.fetchTask = function(ret){
     var job = this;
+    var code;
     var setRunning = function(fetchFrom, pushTo){
         var task = fetchFrom.pop();
         var newTask = {
+            taskId: uuid.v4(),
             heartbeat: new Date()
         };
         newTask.data = task.data;
@@ -93,13 +121,15 @@ schemas.Job.methods.fetchTask = function(ret){
             if(err){
                 console.error(err);
             } else {
-                ret(newTask);
+                ret(newTask, code);
             }
         });
     };
     if(this.mapInput.length){
+        code = this.mapper;
         setRunning(this.mapInput, this.mapRunning);
     } else if(this.reduceInput.length){
+        code = this.reducer;
         setRunning(this.reduceInput, this.reduceRunning);
     } else {
         console.warn("Can't get any jobs from this guy.");
@@ -123,7 +153,7 @@ schemas.Job.statics.fetchTask = function(ret){
 Job = exports.Job = mongoose.model('Job', schemas.Job);
 
 exports.cleanupInterval = 6000;
-var cleanupDelay = 120000;
+var cleanupDelay = 12000;
 
 exports.cleanup = function(){
     var expiration = new Date(new Date() - cleanupDelay);
