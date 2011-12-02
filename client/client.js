@@ -7,7 +7,8 @@ $(document).ready(function () {
                 worker.postMessage({'type': 'NewData', 'NewData':'A string'});
             }
             if (event.data.type === "DataReturn"){
-                console.log('data returned' + event.data.Data)
+                console.log('data returned');
+                console.log(event.data.Data);
             }
         }
         worker.postMessage({ 'type': 'NewData', 'NewData': 'A string' });
