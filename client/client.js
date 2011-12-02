@@ -4,7 +4,10 @@ $(document).ready(function () {
         worker.onmessage = function(event){
             if (event.data.type === "DataRequest"){
                 console.log('data requested');
-                worker.postMessage({'type': 'NewData', 'NewData':'A string'});
+                now.getTask(function (taskId, code, data) {
+                    worker.postMessage({'type': 'NewMapFunction', 'NewFunction': String(code)});
+                    worker.postMessage({'type': 'NewData', 'NewData': datum});
+                });
             }
             if (event.data.type === "DataReturn"){
                 console.log('data returned');
