@@ -20,7 +20,7 @@ app.get('/work.js', function (req, res) {
 });
 
 app.get('/jquery-1.7.1.js', function (req, res) {
-    res.end(jQuery_js);
+    res.end(jquery_js);
 });
 
 app.listen(8080);
