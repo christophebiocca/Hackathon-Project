@@ -6,7 +6,7 @@ $(document).ready(function () {
                 console.log('data requested');
                 now.getTask(function (taskId, code, data) {
                     worker.postMessage({'type': 'NewMapFunction', 'NewFunction': String(code)});
-                    worker.postMessage({'type': 'NewData', 'NewData': datum});
+                    worker.postMessage({'type': 'NewData', 'NewData': data});
                 });
             }
             if (event.data.type === "DataReturn"){
